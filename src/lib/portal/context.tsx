@@ -100,7 +100,7 @@ export function PortalProvider({ children }: { children: React.ReactNode }) {
     if (supabase) {
       await supabase.auth.signOut();
     }
-    window.location.replace(window.location.origin + '/portal/login');
+    window.location.replace(window.location.origin + '/login');
   };
 
   const refreshClient = async () => {

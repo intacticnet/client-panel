@@ -33,17 +33,6 @@ export default function UnifiedLoginPage() {
   const [error, setError] = useState("");
   const [redirectTarget, setRedirectTarget] = useState<RedirectTarget | null>(null);
 
-  useEffect(() => {
-    const checkSession = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      if (session?.user) {
-        await handleRedirect(session.user.id, session.user.email || "");
-      }
-    };
-    checkSession();
-  }, []);
 
   const handleRedirect = useCallback(
     async (userId: string, userEmail: string) => {
@@ -74,6 +63,20 @@ export default function UnifiedLoginPage() {
     },
     [supabase]
   );
+
+  useEffect(() => {
+    const checkSession = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (session?.user) {
+        await handleRedirect(session.user.id, session.user.email || "");
+      }
+    };
+    checkSession();
+  }, []);
+
+
 
   const handleClientSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -208,7 +211,6 @@ export default function UnifiedLoginPage() {
 
       <div className="w-full max-w-lg relative z-10">
         <div className="flex flex-col items-center text-center mb-8">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={BLUE_LOGO} alt="INTACTIC" className="h-8 w-auto object-contain mb-3" width={160} height={32} />
           <h1 className="text-2xl font-bold text-slate-950 tracking-tight">Welcome Back</h1>
           <p className="text-sm text-slate-400 mt-1.5">Select your portal to continue</p>

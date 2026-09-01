@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useRouter, usePathname } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { PortalProvider, usePortal } from '@/lib/portal/context';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet';
@@ -146,18 +146,14 @@ function AccessRestricted() {
 
 function PortalContent({ children }: { children: React.ReactNode }) {
   const { user, loading, accessDenied } = usePortal();
-  const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
-    if (!loading && !user && pathname !== '/portal/login') {
-      router.replace('/portal/login');
+    if (!loading && !user) {
+      window.location.replace(window.location.origin + '/login');
+      return;
     }
-  }, [user, loading, pathname, router]);
-
-  if (pathname === '/portal/login') {
-    return <>{children}</>;
-  }
+  }, [user, loading, pathname]);
 
   if (loading) {
     return (
